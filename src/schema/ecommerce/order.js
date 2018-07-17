@@ -15,6 +15,12 @@ export const Order = {
           state
           partnerId
           userId
+          fulfillmentType
+          shippingAddressLine1
+          shippingAddressLine2
+          shippingCity
+          shippingCountry
+          shippingPostalCode
           itemsTotalCents
           shippingTotalCents
           taxTotalCents

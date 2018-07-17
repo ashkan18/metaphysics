@@ -22,6 +22,12 @@ describe("Order type", () => {
               code
               currencyCode
               state
+              fulfillmentType
+              shippingAddressLine1
+              shippingAddressLine2
+              shippingCity
+              shippingCountry
+              shippingPostalCode
               itemsTotalCents
               shippingTotalCents
               taxTotalCents

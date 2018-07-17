@@ -84,6 +84,12 @@ export const CreateOrderMutation = mutationWithClientMutationId({
             state
             partnerId
             userId
+            fulfillmentType
+            shippingAddressLine1
+            shippingAddressLine2
+            shippingCity
+            shippingCountry
+            shippingPostalCode
             itemsTotalCents
             shippingTotalCents
             taxTotalCents

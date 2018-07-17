@@ -26,6 +26,30 @@ export const OrderType = new GraphQLObjectType({
       type: GraphQLString,
       description: "Tracking code of the order",
     },
+    fulfillmentType: {
+      type: GraphQLString,
+      description: "Fulfillment Type",
+    },
+    shippingAddressLine1: {
+      type: GraphQLString,
+      description: "Shipping Address Line 1",
+    },
+    shippingAddressLine2: {
+      type: GraphQLString,
+      description: "Shipping Address Line 2",
+    },
+    shippingCity: {
+      type: GraphQLString,
+      description: "Shipping Address City",
+    },
+    shippingCountry: {
+      type: GraphQLString,
+      description: "Shipping Address Country",
+    },
+    shippingPostalCode: {
+      type: GraphQLString,
+      description: "Shipping Address Postal Code",
+    },
     itemsTotalCents: amount(({ itemsTotalCents }) => itemsTotalCents),
     shippingTotalCents: amount(({ shippingTotalCents }) => shippingTotalCents),
     taxTotalCents: amount(({ taxTotalCents }) => taxTotalCents),
