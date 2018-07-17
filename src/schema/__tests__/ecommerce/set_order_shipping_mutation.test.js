@@ -10,7 +10,7 @@ describe("Set Order Shipping Mutation", () => {
   beforeEach(() => {
     const resolvers = {
       Mutation: {
-        setOrderShipping: () => ({
+        setShipping: () => ({
           order: exchangeOrderJSON,
           errors: [],
         }),
@@ -24,7 +24,7 @@ describe("Set Order Shipping Mutation", () => {
       mutation {
         setOrderShipping(input: {
             orderId: "111",
-            fulfillmentType: "SHIP",
+            fulfillmentType: SHIP,
             shippingAddressLine1: "Vanak",
             shippingAddressLine2: "P 80",
             shippingCity: "Tehran",

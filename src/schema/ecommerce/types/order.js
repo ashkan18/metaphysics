@@ -6,6 +6,7 @@ import { amount } from "schema/fields/money"
 import date from "schema/fields/date"
 import { UserByID } from "schema/user"
 import { OrderLineItemConnection } from "./order_line_item"
+import { OrderFulfillmentType } from "./order_fulfillment_type"
 
 export const OrderType = new GraphQLObjectType({
   name: "Order",
@@ -27,7 +28,7 @@ export const OrderType = new GraphQLObjectType({
       description: "Tracking code of the order",
     },
     fulfillmentType: {
-      type: GraphQLString,
+      type: OrderFulfillmentType,
       description: "Fulfillment Type",
     },
     shippingAddressLine1: {

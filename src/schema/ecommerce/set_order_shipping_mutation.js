@@ -5,6 +5,7 @@ import {
   GraphQLString,
 } from "graphql"
 import { OrderReturnType } from "./types/order_return"
+import { OrderFulfillmentType } from "./types/order_fulfillment_type"
 import { mutationWithClientMutationId } from "graphql-relay"
 
 const SetOrderShippingInputType = new GraphQLInputObjectType({
@@ -28,15 +29,15 @@ const SetOrderShippingInputType = new GraphQLInputObjectType({
     },
     shippingCity: {
       type: new GraphQLNonNull(GraphQLString),
-      description: "Shipping Address City",
+      description: "Shipping City",
     },
     shippingCountry: {
       type: new GraphQLNonNull(GraphQLString),
-      description: "Shipping Address Country",
+      description: "Shipping Country",
     },
     shippingPostalCode: {
       type: new GraphQLNonNull(GraphQLString),
-      description: "Shipping Address Postal Code",
+      description: "Shipping Postal Code",
     },
   },
 })
@@ -60,7 +61,7 @@ export const SetOrderShippingMutation = mutationWithClientMutationId({
       return new Error("You need to be signed in to perform this action")
     }
     const mutation = `
-      mutation setOrderShipping($orderId: ID!, $fulfillmentType: string!, $shippingAddressLine1: string!, $shippingAddressLine2: string, $shippingCity: string!, $shippingCountry: string!, shippingPostalCode: $shippingPostalCode) {
+      mutation setOrderShipping($orderId: ID!, $fulfillmentType: EcommerceOrderFulfillmentTypeEnum!, $shippingAddressLine1: String!, $shippingAddressLine2: String, $shippingCity: String!, $shippingCountry: String!, $shippingPostalCode: String!) {
         ecommerce_setShipping(input: {
           id: $orderId,
           fulfillmentType: $fulfillmentType,
@@ -113,6 +114,7 @@ export const SetOrderShippingMutation = mutationWithClientMutationId({
     return graphql(exchangeSchema, mutation, null, context, {
       orderId,
     }).then(result => {
+      console.log(result)
       const { order, errors } = result.data.ecommerce_setShipping
       return {
         order,
