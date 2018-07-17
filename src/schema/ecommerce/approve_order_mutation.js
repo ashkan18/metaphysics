@@ -1,11 +1,11 @@
 import { graphql } from "graphql"
-import { OrderReturnType } from "schema/ecommerce/types/order_return"
-import { OrderMutationInputType } from "schema/ecommerce/types/order_mutation_input"
+import { OrderReturnType } from "./types/order_return"
+import { OrderMutationInputType } from "./types/order_mutation_input"
 import { mutationWithClientMutationId } from "graphql-relay"
 
 export const ApproveOrderMutation = mutationWithClientMutationId({
   name: "ApproveOrder",
-  decription: "Approvess an order with payment",
+  description: "Approves an order with payment",
   inputFields: OrderMutationInputType.getFields(),
   outputFields: {
     result: {
@@ -27,7 +27,7 @@ export const ApproveOrderMutation = mutationWithClientMutationId({
           id: $orderId,
         }) {
           order {
-           id
+            id
             code
             currencyCode
             state

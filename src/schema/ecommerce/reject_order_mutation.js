@@ -28,7 +28,7 @@ export const RejectOrderMutation = mutationWithClientMutationId({
           id: $orderId,
         }) {
           order {
-           id
+            id
             code
             currencyCode
             state

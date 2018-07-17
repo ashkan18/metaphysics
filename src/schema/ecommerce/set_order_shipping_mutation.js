@@ -1,81 +1,74 @@
 import {
+  graphql,
   GraphQLInputObjectType,
   GraphQLNonNull,
-  GraphQLList,
-  GraphQLInt,
   GraphQLString,
-  graphql,
 } from "graphql"
-
-import { OrderReturnType } from "schema/ecommerce/types/order_return"
+import { OrderReturnType } from "./types/order_return"
 import { mutationWithClientMutationId } from "graphql-relay"
 
-const LineItemInputType = new GraphQLInputObjectType({
-  name: "LineItemInput",
+const SetOrderShippingInputType = new GraphQLInputObjectType({
+  name: "SetOrderShippingInput",
   fields: {
-    artworkId: {
+    orderId: {
       type: new GraphQLNonNull(GraphQLString),
-      description: "ID of artwork",
+      description: "Order ID",
     },
-    quantity: {
-      type: new GraphQLNonNull(GraphQLInt),
-      description: "quantity of artwork",
-    },
-    priceCents: {
-      type: new GraphQLNonNull(GraphQLInt),
-      description: "Price in cents",
-    },
-  },
-})
-
-const CreateOrderInputType = new GraphQLInputObjectType({
-  name: "CreateOrderInput",
-  fields: {
-    userId: {
+    fulfillmentType: {
       type: new GraphQLNonNull(GraphQLString),
-      description: "ID of user submitting the order",
+      description: "Fulfillment type",
     },
-    partnerId: {
+    shippingAddressLine1: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: "Shipping Address Line 1 ",
+    },
+    shippingAddressLine2: {
       type: GraphQLString,
-      description: "ID of partner representing artwork",
+      description: "Shipping Address Line 2",
     },
-    currencyCode: {
+    shippingCity: {
       type: new GraphQLNonNull(GraphQLString),
-      description: "Currency code",
+      description: "Shipping Address City",
     },
-    lineItems: {
-      type: new GraphQLList(LineItemInputType),
-      description: "Line items in the order",
+    shippingCountry: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: "Shipping Address Country",
+    },
+    shippingPostalCode: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: "Shipping Address Postal Code",
     },
   },
 })
 
-export const CreateOrderMutation = mutationWithClientMutationId({
-  name: "CreateOrder",
-  description: "Creates an order with payment",
-  inputFields: CreateOrderInputType.getFields(),
+export const SetOrderShippingMutation = mutationWithClientMutationId({
+  name: "SetOrderShipping",
+  description: "Sets shipping information on an order.",
+  inputFields: SetOrderShippingInputType.getFields(),
   outputFields: {
     result: {
       type: OrderReturnType,
-      resolve: result => result,
+      resolve: order => order,
     },
   },
   mutateAndGetPayload: (
-    { userId, partnerId, currencyCode, lineItems },
+    { orderId },
     context,
     { rootValue: { accessToken, exchangeSchema } }
   ) => {
     if (!accessToken) {
       return new Error("You need to be signed in to perform this action")
     }
-
     const mutation = `
-      mutation creatorder($currencyCode: String!, $partnerId: String!, $userId: String!, $lineItems: [EcommerceLineItemAttributes!]) {
-        ecommerce_createOrder(input: {
-          partnerId: $partnerId,
-          userId: $userId,
-          currencyCode: $currencyCode,
-          lineItems: $lineItems,
+      mutation setOrderShipping($orderId: ID!, $fulfillmentType: string!, $shippingAddressLine1: string!, $shippingAddressLine2: string, $shippingCity: string!, $shippingCountry: string!, shippingPostalCode: $shippingPostalCode) {
+        ecommerce_setShipping(input: {
+          id: $orderId,
+          fulfillmentType: $fulfillmentType,
+          shippingAddressLine1: $shippingAddressLine1,
+          shippingAddressLine2: $shippingAddressLine2,
+          shippingCity: $shippingCity,
+          shippingCountry: $shippingCountry,
+          shippingPostalCode: $shippingPostalCode
         }) {
           order {
             id
@@ -118,12 +111,9 @@ export const CreateOrderMutation = mutationWithClientMutationId({
       }
     `
     return graphql(exchangeSchema, mutation, null, context, {
-      userId,
-      partnerId,
-      currencyCode,
-      lineItems,
+      orderId,
     }).then(result => {
-      const { order, errors } = result.data.ecommerce_createOrder
+      const { order, errors } = result.data.ecommerce_setShipping
       return {
         order,
         errors,
