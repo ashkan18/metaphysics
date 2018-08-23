@@ -4,7 +4,6 @@ import {
   GraphQLString,
   GraphQLInt,
 } from "graphql"
-import { OrderFulfillmentTypeEnum } from "./order_fulfillment_type_enum"
 import { connectionDefinitions } from "graphql-relay"
 
 import Partner from "schema/partner"
@@ -13,6 +12,7 @@ import date from "schema/fields/date"
 import { UserByID } from "schema/user"
 import { CreditCard } from "schema/credit_card"
 import { OrderLineItemConnection } from "./order_line_item"
+import { RequestedFulfillmentUnionType } from "./requested_fulfillment"
 
 export const OrderType = new GraphQLObjectType({
   name: "Order",
@@ -33,37 +33,9 @@ export const OrderType = new GraphQLObjectType({
       type: GraphQLString,
       description: "Tracking code of the order",
     },
-    fulfillmentType: {
-      type: OrderFulfillmentTypeEnum,
-      description: "Fulfillment Type",
-    },
-    shippingName: {
-      type: GraphQLString,
-      description: "Name for shipping information",
-    },
-    shippingAddressLine1: {
-      type: GraphQLString,
-      description: "Shipping address line 1",
-    },
-    shippingAddressLine2: {
-      type: GraphQLString,
-      description: "Shipping address line 2",
-    },
-    shippingCity: {
-      type: GraphQLString,
-      description: "Shipping city",
-    },
-    shippingCountry: {
-      type: GraphQLString,
-      description: "Shipping country",
-    },
-    shippingPostalCode: {
-      type: GraphQLString,
-      description: "Shipping postal code",
-    },
-    shippingRegion: {
-      type: GraphQLString,
-      description: "Shipping region",
+    requestedFulfillment: {
+      type: RequestedFulfillmentUnionType,
+      description: "Order Requested Fulfillment",
     },
     itemsTotalCents: {
       type: GraphQLInt,

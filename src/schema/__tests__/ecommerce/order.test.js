@@ -4,6 +4,7 @@ import { runQuery } from "test/utils"
 import { mockxchange } from "test/fixtures/exchange/mockxchange"
 import sampleOrder from "test/fixtures/results/sample_order"
 import exchangeOrderJSON from "test/fixtures/exchange/order.json"
+import orderFields from "./order_fields"
 
 let rootValue
 
@@ -17,70 +18,7 @@ describe("Order type", () => {
     const query = `
       {
         order(id: "52dd3c2e4b8480091700027f") {
-          id
-          code
-          currencyCode
-          state
-          fulfillmentType
-          shippingName
-          shippingAddressLine1
-          shippingAddressLine2
-          shippingCity
-          shippingCountry
-          shippingPostalCode
-          shippingRegion
-          itemsTotalCents
-          shippingTotalCents
-          taxTotalCents
-          commissionFeeCents
-          transactionFeeCents
-          buyerTotalCents
-          sellerTotalCents
-          itemsTotal
-          shippingTotal
-          taxTotal
-          commissionFee
-          transactionFee
-          buyerTotal
-          sellerTotal
-          updatedAt
-          createdAt
-          stateUpdatedAt
-          stateExpiresAt
-          partner {
-            id
-            name
-          }
-          user {
-            id
-            email
-          }
-          creditCard {
-            id
-            brand
-            last_digits
-          }
-          lineItems {
-            edges {
-              node {
-                fulfillments {
-                  edges {
-                    node {
-                      id
-                      courier
-                      trackingId
-                      estimatedDelivery
-                    }
-                  }
-                }
-                artwork {
-                  id
-                  title
-                  inventoryId
-                }
-              }
-            }
-          }
+          ${orderFields}
         }
       }
     `

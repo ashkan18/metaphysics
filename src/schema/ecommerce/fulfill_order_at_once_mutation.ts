@@ -6,6 +6,7 @@ import {
 } from "graphql"
 import { OrderReturnType } from "schema/ecommerce/types/order_return"
 import { mutationWithClientMutationId } from "graphql-relay"
+import gql from "lib/gql"
 
 const FulfillmentInputType = new GraphQLInputObjectType({
   name: "FulfillmentInputType",
@@ -59,27 +60,32 @@ export const FulfillOrderAtOnceMutation = mutationWithClientMutationId({
       return new Error("You need to be signed in to perform this action")
     }
 
-    const mutation = `
-      mutation fulfillOrderAtOnce($orderId: ID!, $fulfillment: EcommerceFulfillmentAttributes!) {
-        ecommerce_fulfillAtOnce(input: {
-          id: $orderId,
-          fulfillment: $fulfillment
-        }) {
+    const mutation = gql`
+      mutation fulfillOrderAtOnce(
+        $orderId: ID!
+        $fulfillment: EcommerceFulfillmentAttributes!
+      ) {
+        ecommerce_fulfillAtOnce(
+          input: { id: $orderId, fulfillment: $fulfillment }
+        ) {
           order {
-           id
+            id
             code
             currencyCode
             state
             partnerId
             userId
-            fulfillmentType
-            shippingName
-            shippingAddressLine1
-            shippingAddressLine2
-            shippingCity
-            shippingCountry
-            shippingPostalCode
-            shippingRegion
+            requestedFulfillment {
+              ... on EcommerceShip {
+                name
+                addressLine1
+                addressLine2
+                city
+                country
+                postalCode
+                region
+              }
+            }
             itemsTotalCents
             shippingTotalCents
             taxTotalCents
@@ -91,17 +97,17 @@ export const FulfillOrderAtOnceMutation = mutationWithClientMutationId({
             createdAt
             stateUpdatedAt
             stateExpiresAt
-            lineItems{
-              edges{
-                node{
+            lineItems {
+              edges {
+                node {
                   id
                   priceCents
                   artworkId
                   editionSetId
                   quantity
-                  fulfillments{
-                    edges{
-                      node{
+                  fulfillments {
+                    edges {
+                      node {
                         id
                         courier
                         trackingId

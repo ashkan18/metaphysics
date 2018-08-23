@@ -3,6 +3,8 @@ import { runQuery } from "test/utils"
 import { mockxchange } from "test/fixtures/exchange/mockxchange"
 import sampleOrder from "test/fixtures/results/sample_order"
 import exchangeOrderJSON from "test/fixtures/exchange/order.json"
+import orderFields from "./order_fields"
+import gql from "lib/gql"
 
 let rootValue
 
@@ -20,7 +22,7 @@ describe("Fulfill Order at Once Mutation", () => {
     rootValue = mockxchange(resolvers)
   })
   it("fulfills the order and return it", () => {
-    const mutation = `
+    const mutation = gql`
       mutation {
         fulfillOrderAtOnce(input: {
             orderId: "111",
@@ -31,68 +33,9 @@ describe("Fulfill Order at Once Mutation", () => {
             }
           }) {
             result {
-              order {
-                id
-                code
-                currencyCode
-                state
-                fulfillmentType
-                shippingName
-                shippingAddressLine1
-                shippingAddressLine2
-                shippingCity
-                shippingCountry
-                shippingPostalCode
-                shippingRegion
-                itemsTotalCents
-                shippingTotalCents
-                taxTotalCents
-                commissionFeeCents
-                transactionFeeCents
-                buyerTotalCents
-                sellerTotalCents
-                itemsTotal
-                shippingTotal
-                taxTotal
-                commissionFee
-                transactionFee
-                buyerTotal
-                sellerTotal
-                updatedAt
-                createdAt
-                stateUpdatedAt
-                stateExpiresAt
-                partner {
-                  id
-                  name
-                }
-                user {
-                  id
-                  email
-                }
-                lineItems {
-                  edges {
-                    node {
-                      fulfillments {
-                        edges {
-                          node {
-                            id
-                            courier
-                            trackingId
-                            estimatedDelivery
-                          }
-                        }
-                      }
-                      artwork {
-                        id
-                        title
-                        inventoryId
-                      }
-                    }
-                  }
-                }
+              order{
+                ${orderFields}
               }
-            errors
             }
           }
         }

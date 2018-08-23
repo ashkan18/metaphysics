@@ -19,6 +19,7 @@ export const Orders = {
     context,
     { rootValue: { exchangeSchema } }
   ) => {
+    console.log("MP Query which will call exchangeSchema:")
     const query = gql`
       query EcommerceOrders(
         $userId: String
@@ -42,14 +43,14 @@ export const Orders = {
               userId
               updatedAt
               createdAt
-              fulfillmentType
-              shippingName
-              shippingAddressLine1
-              shippingAddressLine2
-              shippingCity
-              shippingCountry
-              shippingPostalCode
-              shippingRegion
+              requestedFulfillment {
+                ... on EcommerceShip {
+                  country
+                }
+                ... on EcommercePickup {
+                  fulfillmentType
+                }
+              }
               itemsTotalCents
               shippingTotalCents
               taxTotalCents
@@ -81,6 +82,8 @@ export const Orders = {
       state,
       sort,
     }).then(result => {
+      console.log("resolve in exchange gave ------>")
+      console.log(result)
       if (result.errors) {
         throw Error(result.errors.map(d => d.message))
       }

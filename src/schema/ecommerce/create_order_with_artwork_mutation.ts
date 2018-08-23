@@ -68,21 +68,24 @@ export const CreateOrderWithArtworkMutation = mutationWithClientMutationId({
                 commissionFeeCents
                 createdAt
                 currencyCode
-                fulfillmentType
                 itemsTotalCents
                 partnerId
                 sellerTotalCents
-                shippingAddressLine1
-                shippingAddressLine2
-                shippingCity
-                shippingCountry
-                shippingName
-                shippingPostalCode
-                shippingRegion
-                shippingTotalCents
+                requestedFulfillment {
+                  ... on EcommerceShip {
+                    name
+                    addressLine1
+                    addressLine2
+                    city
+                    country
+                    postalCode
+                    region
+                  }
+                }
                 state
                 stateExpiresAt
                 stateUpdatedAt
+                shippingTotalCents
                 taxTotalCents
                 transactionFeeCents
                 updatedAt

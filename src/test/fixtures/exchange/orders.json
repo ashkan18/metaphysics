@@ -8,15 +8,18 @@
         "currencyCode": "usd",
         "partnerId": "111",
         "userId": "111",
-        "fulfillmentType": "SHIP",
-        "shippingName": "Dr Collector",
-        "shippingAddressLine1": "Vanak 123",
-        "shippingAddressLine2": "P 80",
-        "shippingCity": "Tehran",
-        "shippingRegion": "Tehran",
-        "shippingCountry": "IR",
-        "shippingPostalCode": "09821",
+        "creditCardId": "card123",
+        "requestedFulfillment": {
+          "name": "Dr Collector",
+          "addressLine1": "Vanak 123",
+          "addressLine2": "P 80",
+          "city": "Tehran",
+          "region": "Tehran",
+          "country": "IR",
+          "postalCode": "09821"
+        },
         "itemsTotalCents": "420000",
+        "shippingTotal": "$4,201",
         "shippingTotalCents": "420100",
         "taxTotalCents": "420200",
         "commissionFeeCents": "420300",
@@ -41,6 +44,7 @@
                   "edges": [
                     {
                       "node": {
+                        "id": "f-1",
                         "courier": "fedEx",
                         "trackingId": "track1",
                         "estimatedDelivery": "2018-05-18"

@@ -1,12 +1,14 @@
 import { graphql, GraphQLNonNull, GraphQLString } from "graphql"
 import { OrderType } from "schema/ecommerce/types/order"
+import gql from "lib/gql"
+
 export const Order = {
   name: "Order",
   type: OrderType,
   description: "Returns a single Order",
   args: { id: { type: new GraphQLNonNull(GraphQLString) } },
   resolve: (_parent, { id }, context, { rootValue: { exchangeSchema } }) => {
-    const query = `
+    const query = gql`
       query EcommerceOrder($id: ID!) {
         ecommerce_order(id: $id) {
           id
@@ -16,14 +18,17 @@ export const Order = {
           partnerId
           userId
           creditCardId
-          fulfillmentType
-          shippingName
-          shippingAddressLine1
-          shippingAddressLine2
-          shippingCity
-          shippingCountry
-          shippingPostalCode
-          shippingRegion
+          requestedFulfillment {
+            ... on EcommerceShip {
+              name
+              addressLine1
+              addressLine2
+              city
+              country
+              postalCode
+              region
+            }
+          }
           itemsTotalCents
           shippingTotalCents
           taxTotalCents
@@ -35,17 +40,17 @@ export const Order = {
           createdAt
           stateUpdatedAt
           stateExpiresAt
-          lineItems{
-            edges{
-              node{
+          lineItems {
+            edges {
+              node {
                 id
                 priceCents
                 artworkId
                 editionSetId
                 quantity
-                fulfillments{
-                  edges{
-                    node{
+                fulfillments {
+                  edges {
+                    node {
                       id
                       courier
                       trackingId

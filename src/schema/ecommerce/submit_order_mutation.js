@@ -6,6 +6,7 @@ import {
 } from "graphql"
 import { OrderReturnType } from "schema/ecommerce/types/order_return"
 import { mutationWithClientMutationId } from "graphql-relay"
+import gql from "lib/gql"
 
 const SubmitOrderInputType = new GraphQLInputObjectType({
   name: "SubmitOrderInput",
@@ -36,26 +37,27 @@ export const SubmitOrderMutation = mutationWithClientMutationId({
       return new Error("You need to be signed in to perform this action")
     }
 
-    const mutation = `
+    const mutation = gql`
       mutation submitOrder($orderId: ID!) {
-        ecommerce_submitOrder(input: {
-          id: $orderId
-        }) {
+        ecommerce_submitOrder(input: { id: $orderId }) {
           order {
-           id
+            id
             code
             currencyCode
             state
             partnerId
             userId
-            fulfillmentType
-            shippingName
-            shippingAddressLine1
-            shippingAddressLine2
-            shippingCity
-            shippingCountry
-            shippingPostalCode
-            shippingRegion
+            requestedFulfillment {
+              ... on EcommerceShip {
+                name
+                addressLine1
+                addressLine2
+                city
+                country
+                postalCode
+                region
+              }
+            }
             itemsTotalCents
             shippingTotalCents
             taxTotalCents
@@ -67,9 +69,9 @@ export const SubmitOrderMutation = mutationWithClientMutationId({
             createdAt
             stateUpdatedAt
             stateExpiresAt
-            lineItems{
-              edges{
-                node{
+            lineItems {
+              edges {
+                node {
                   id
                   priceCents
                   artworkId

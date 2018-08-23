@@ -2,6 +2,7 @@ import { graphql } from "graphql"
 import { OrderReturnType } from "schema/ecommerce/types/order_return"
 import { OrderMutationInputType } from "schema/ecommerce/types/order_mutation_input"
 import { mutationWithClientMutationId } from "graphql-relay"
+import gql from "lib/gql"
 
 export const ApproveOrderMutation = mutationWithClientMutationId({
   name: "ApproveOrder",
@@ -21,26 +22,27 @@ export const ApproveOrderMutation = mutationWithClientMutationId({
     if (!accessToken) {
       return new Error("You need to be signed in to perform this action")
     }
-    const mutation = `
+    const mutation = gql`
       mutation approveOrder($orderId: ID!) {
-        ecommerce_approveOrder(input: {
-          id: $orderId,
-        }) {
+        ecommerce_approveOrder(input: { id: $orderId }) {
           order {
-           id
+            id
             code
             currencyCode
             state
             partnerId
             userId
-            fulfillmentType
-            shippingName
-            shippingAddressLine1
-            shippingAddressLine2
-            shippingCity
-            shippingCountry
-            shippingPostalCode
-            shippingRegion
+            requestedFulfillment {
+              ... on EcommerceShip {
+                name
+                addressLine1
+                addressLine2
+                city
+                country
+                postalCode
+                region
+              }
+            }
             itemsTotalCents
             shippingTotalCents
             taxTotalCents
@@ -52,9 +54,9 @@ export const ApproveOrderMutation = mutationWithClientMutationId({
             createdAt
             stateUpdatedAt
             stateExpiresAt
-            lineItems{
-              edges{
-                node{
+            lineItems {
+              edges {
+                node {
                   id
                   priceCents
                   artworkId

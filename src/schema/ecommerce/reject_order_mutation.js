@@ -34,14 +34,17 @@ export const RejectOrderMutation = mutationWithClientMutationId({
             state
             partnerId
             userId
-            fulfillmentType
-            shippingName
-            shippingAddressLine1
-            shippingAddressLine2
-            shippingCity
-            shippingCountry
-            shippingPostalCode
-            shippingRegion
+            requestedFulfillment {
+              ... on EcommerceShip {
+                name
+                addressLine1
+                addressLine2
+                city
+                country
+                postalCode
+                region
+              }
+            }
             itemsTotalCents
             shippingTotalCents
             taxTotalCents

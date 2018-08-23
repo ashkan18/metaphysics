@@ -4,6 +4,7 @@ import { mockxchange } from "test/fixtures/exchange/mockxchange"
 import sampleOrder from "test/fixtures/results/sample_order"
 import exchangeOrderJSON from "test/fixtures/exchange/order.json"
 import gql from "lib/gql"
+import orderFields from "./order_fields"
 
 let rootValue
 
@@ -14,15 +15,6 @@ describe("Create Order Mutation", () => {
         createOrderWithArtwork: () => ({
           orderOrError: { order: exchangeOrderJSON },
         }),
-      },
-      OrderOrFailureUnion: {
-        __resolveType(obj, context, info) {
-          if (obj.order) {
-            return "OrderWithMutationSuccess"
-          } else if (obj.error) {
-            return "OrderWithMutationFailure"
-          }
-        },
       },
     }
 
@@ -37,56 +29,8 @@ describe("Create Order Mutation", () => {
         ) {
           orderOrError {
             ... on OrderWithMutationSuccess {
-              order {
-                id
-                buyerTotal
-                buyerTotalCents
-                code
-                commissionFee
-                commissionFeeCents
-                createdAt
-                currencyCode
-                fulfillmentType
-                itemsTotal
-                itemsTotalCents
-                sellerTotal
-                sellerTotalCents
-                shippingAddressLine1
-                shippingAddressLine2
-                shippingCity
-                shippingCountry
-                shippingName
-                shippingPostalCode
-                shippingRegion
-                shippingTotal
-                shippingTotalCents
-                state
-                stateExpiresAt
-                stateUpdatedAt
-                taxTotal
-                taxTotalCents
-                transactionFee
-                transactionFeeCents
-                updatedAt
-                partner {
-                  id
-                  name
-                }
-                user {
-                  id
-                  email
-                }
-                lineItems {
-                  edges {
-                    node {
-                      artwork {
-                        id
-                        title
-                        inventoryId
-                      }
-                    }
-                  }
-                }
+              order{
+                ${orderFields}
               }
             }
             ... on OrderWithMutationFailure {
