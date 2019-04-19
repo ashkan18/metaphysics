@@ -7,7 +7,7 @@ const vortexSchema = executableVortexSchema({ removeRootFields: false })
 
 export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
   // The SDL used to declare how to stitch an object
-  extensionSchema: gql`
+  extensionSchema: `
     extend type AnalyticsPricingContext {
       appliedFilterDisplay: String
     }
