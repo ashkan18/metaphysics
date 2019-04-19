@@ -43,14 +43,14 @@ export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
   resolvers: {
     AnalyticsPricingContext: {
       appliedFilterDisplay: {
-        fragment: gql` ... on AnalyticsPricingContext { appliedFilters }`,
+        fragment: ` ... on AnalyticsPricingContext { appliedFilters }`,
         resolve: (parent, _args, _context, _info) =>
           filtersDescription(parent.appliedFilters),
       },
     },
     AnalyticsHistogramBin: {
       minPrice: {
-        fragment: gql`
+        fragment: `
           ... on AnalyticsHistogramBin {
             minPriceCents
           }
@@ -59,7 +59,7 @@ export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
           amount(_ => parent.minPriceCents).resolve({}, args),
       },
       maxPrice: {
-        fragment: gql`
+        fragment: `
           ... on AnalyticsHistogramBin {
             maxPriceCents
           }
@@ -70,7 +70,7 @@ export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
     },
     Artwork: {
       pricingContext: {
-        fragment: gql`
+        fragment: `
           ... on Artwork {
             widthCm
             heightCm
@@ -156,7 +156,7 @@ export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
     },
     Partner: {
       analytics: {
-        fragment: gql`... on Partner {
+        fragment: `... on Partner {
           _id
         }`,
         resolve: async (source, _, context, info) => {
