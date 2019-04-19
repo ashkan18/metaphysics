@@ -8,11 +8,11 @@ const vortexSchema = executableVortexSchema({ removeRootFields: false })
 export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
   // The SDL used to declare how to stitch an object
   extensionSchema: gql`
-    extend type Artwork {
-      pricingContext: AnalyticsPricingContext
-    }
     extend type AnalyticsPricingContext {
       appliedFilterDisplay: String
+    }
+    extend type Artwork {
+      pricingContext: AnalyticsPricingContext
     }
     extend type AnalyticsHistogramBin {
       minPrice(
