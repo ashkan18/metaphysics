@@ -8,9 +8,7 @@ type ArtworksPublishedStats {
   """
   Time series data on number of artworks published
   """
-  timeSeries(
-    samplingFrequency: SamplingFrequencyEnum
-  ): [ArtworksPublishedTimeSeriesStats!]
+  timeSeries(samplingFrequency: SamplingFrequencyEnum): [ArtworksPublishedTimeSeriesStats!]
   totalCount: Int!
 }
 
@@ -35,6 +33,9 @@ type HistogramBin {
   maxPriceCents: Int!
   minPriceCents: Int!
   numArtworks: Int!
+}
+
+type Mutation {
 }
 
 """
@@ -113,11 +114,20 @@ interface PartnerTimeSeriesStats {
 }
 
 """
+Price Context Filter Type
+"""
+type PriceContextFilterType {
+  category: PricingContextCategoryEnum
+  dimension: PricingContextDimensionEnum
+}
+
+"""
 Pricing Context Histogram
 """
 type PricingContext {
+  appliedFilters: PriceContextFilterType!
   bins: [HistogramBin!]!
-  filterDescription: String!
+  filterDescription: String! @deprecated(reason: "switch to applied_filters")
 }
 
 enum PricingContextCategoryEnum {
@@ -217,6 +227,23 @@ enum PricingContextCategoryEnum {
   WORK_ON_PAPER
 }
 
+enum PricingContextDimensionEnum {
+  """
+  Large
+  """
+  LARGE
+
+  """
+  Medium
+  """
+  MEDIUM
+
+  """
+  Small
+  """
+  SMALL
+}
+
 type Query {
   """
   Find PartnerStats
@@ -226,12 +253,7 @@ type Query {
   """
   Pricing Context Histograms
   """
-  pricingContext(
-    artistId: String!
-    category: PricingContextCategoryEnum!
-    heightCm: Int!
-    widthCm: Int!
-  ): PricingContext
+  pricingContext(artistId: String!, category: PricingContextCategoryEnum!, heightCm: Int!, widthCm: Int!): PricingContext
 }
 
 enum QueryPeriodEnum {
