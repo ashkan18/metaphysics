@@ -7,7 +7,7 @@ const vortexSchema = executableVortexSchema({ removeRootFields: false })
 
 export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
   // The SDL used to declare how to stitch an object
-  extensionSchema: `
+  extensionSchema: gql`
     extend type AnalyticsPricingContext {
       appliedFilterDisplay: String
     }
@@ -43,14 +43,14 @@ export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
   resolvers: {
     AnalyticsPricingContext: {
       appliedFilterDisplay: {
-        fragment: ` ... on AnalyticsPricingContext { appliedFilters }`,
+        fragment: gql` ... on AnalyticsPricingContext { appliedFilters }`,
         resolve: (parent, _args, _context, _info) =>
           filtersDescription(parent.appliedFilters),
       },
     },
     AnalyticsHistogramBin: {
       minPrice: {
-        fragment: `
+        fragment: gql`
           ... on AnalyticsHistogramBin {
             minPriceCents
           }
@@ -59,7 +59,7 @@ export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
           amount(_ => parent.minPriceCents).resolve({}, args),
       },
       maxPrice: {
-        fragment: `
+        fragment: gql`
           ... on AnalyticsHistogramBin {
             maxPriceCents
           }
@@ -70,7 +70,7 @@ export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
     },
     Artwork: {
       pricingContext: {
-        fragment: `
+        fragment: gql`
           ... on Artwork {
             widthCm
             heightCm
@@ -156,7 +156,7 @@ export const vortexStitchingEnvironment = (localSchema: GraphQLSchema) => ({
     },
     Partner: {
       analytics: {
-        fragment: `... on Partner {
+        fragment: gql`... on Partner {
           _id
         }`,
         resolve: async (source, _, context, info) => {
